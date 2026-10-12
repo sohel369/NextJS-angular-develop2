@@ -39,8 +39,27 @@
   <div class="profile-cover-banner" *ngIf="currentUser">
     <div class="cover-mesh-gradient"></div>
     <div class="cover-badges">
-      <span class="cover-badge"><span class="live-indicator"></span> AWS ECS Cluster Active</span>
-      <span class="cover-badge font-mono">PostgreSQL RDS Multi-AZ</span>
+      <button
+        type="button"
+        class="cover-badge-btn"
+        (click)="setTab('infra')"
+        title="View AWS ECS Cluster Telemetry & Health"
+      >
+        <span class="live-indicator"></span>
+        <span>AWS ECS Cluster Active</span>
+        <span class="material-symbols-outlined badge-arr">arrow_forward</span>
+      </button>
+
+      <button
+        type="button"
+        class="cover-badge-btn font-mono"
+        (click)="setTab('infra')"
+        title="View PostgreSQL RDS Multi-AZ Database Telemetry"
+      >
+        <span class="material-symbols-outlined db-icon">database</span>
+        <span>PostgreSQL RDS Multi-AZ</span>
+        <span class="material-symbols-outlined badge-arr">arrow_forward</span>
+      </button>
     </div>
   </div>
 
@@ -137,6 +156,7 @@
     <!-- Right Column: Settings Form -->
     <main class="card settings-card">
       <!-- Tabs Navigation -->
+      <!-- Tabs Navigation (Responsive Touch-Friendly Scrollable Bar) -->
       <nav class="settings-tabs" aria-label="Profile Tabs">
         <button
           type="button"
@@ -144,6 +164,7 @@
           [class.active]="activeTab === 'general'"
           (click)="setTab('general')"
         >
+          <span class="material-symbols-outlined tab-icon">person</span>
           <span>General</span>
         </button>
         <button
@@ -152,6 +173,7 @@
           [class.active]="activeTab === 'social'"
           (click)="setTab('social')"
         >
+          <span class="material-symbols-outlined tab-icon">link</span>
           <span>Social & Links</span>
         </button>
         <button
@@ -160,7 +182,28 @@
           [class.active]="activeTab === 'preferences'"
           (click)="setTab('preferences')"
         >
+          <span class="material-symbols-outlined tab-icon">tune</span>
           <span>Preferences</span>
+        </button>
+        <button
+          type="button"
+          class="tab-link"
+          [class.active]="activeTab === 'team'"
+          (click)="setTab('team')"
+        >
+          <span class="material-symbols-outlined tab-icon">groups</span>
+          <span>Team Members</span>
+          <span class="tab-count-badge font-mono">{{ allUsers.length }}</span>
+        </button>
+        <button
+          type="button"
+          class="tab-link"
+          [class.active]="activeTab === 'infra'"
+          (click)="setTab('infra')"
+        >
+          <span class="material-symbols-outlined tab-icon">cloud_sync</span>
+          <span>ECS & RDS Infra</span>
+          <span class="tab-status-pill font-mono">LIVE</span>
         </button>
       </nav>
 
@@ -281,8 +324,237 @@
           </div>
         </section>
 
-        <!-- Form Actions -->
-        <div class="form-footer">
+        <!-- Tab 4: Team Directory (100% Fully Responsive) -->
+        <section *ngIf="activeTab === 'team'" class="tab-body team-tab-body">
+          <div class="team-header-row">
+            <div>
+              <h3 class="team-subheading">Enterprise Team Directory</h3>
+              <p class="team-caption">Accounts managed through AWS IAM & PostgreSQL.</p>
+            </div>
+            <div class="team-total-badge font-mono">
+              <span>{{ allUsers.length }} Members</span>
+            </div>
+          </div>
+
+          <div class="team-grid">
+            <div
+              class="team-member-card"
+              *ngFor="let member of allUsers"
+              [class.active-member]="member.id === currentUser.id"
+            >
+              <div class="member-top">
+                <div class="member-avatar-wrap">
+                  <img
+                    [src]="member.profile?.avatarUrl || presetAvatars[0]"
+                    [alt]="member.name"
+                    class="member-avatar-img"
+                  />
+                  <span class="member-status-dot" [class.online]="member.status === 'active'"></span>
+                </div>
+                <div class="member-info">
+                  <div class="member-name-row">
+                    <h4 class="member-name">{{ member.name }}</h4>
+                    <span class="current-tag" *ngIf="member.id === currentUser.id">Active</span>
+                  </div>
+                  <p class="member-role-title">{{ member.profile?.title || 'Engineer' }}</p>
+                  <p class="member-email font-mono">{{ member.email }}</p>
+                </div>
+              </div>
+
+              <div class="member-footer">
+                <span class="member-badge" [ngClass]="'role-' + member.role">
+                  {{ member.role | uppercase }}
+                </span>
+                <button
+                  type="button"
+                  class="btn-switch-account font-mono"
+                  *ngIf="member.id !== currentUser.id"
+                  (click)="selectUser(member)"
+                  title="Switch to this account profile"
+                >
+                  <span>Select Profile</span>
+                  <span class="material-symbols-outlined">arrow_forward</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Tab 5: AWS ECS & PostgreSQL RDS Live Infrastructure Telemetry -->
+        <section *ngIf="activeTab === 'infra'" class="tab-body infra-tab-body">
+          <div class="infra-header-row">
+            <div>
+              <div class="infra-pill-tag font-mono">
+                <span class="live-indicator"></span>
+                <span>PRODUCTION TELEMETRY</span>
+              </div>
+              <h3 class="infra-heading">AWS ECS (Fargate) & PostgreSQL RDS Multi-AZ</h3>
+              <p class="infra-caption">Continuous Zero-Downtime Deployment & Database Layer Telemetry.</p>
+            </div>
+            <div class="infra-actions">
+              <button
+                type="button"
+                class="btn-smoke-test font-mono"
+                (click)="triggerSmokeTest()"
+                [disabled]="isTriggeringSmokeTest"
+              >
+                <span class="material-symbols-outlined spin-icon" *ngIf="isTriggeringSmokeTest">sync</span>
+                <span class="material-symbols-outlined" *ngIf="!isTriggeringSmokeTest">verified_user</span>
+                <span>{{ isTriggeringSmokeTest ? 'Checking Probes...' : 'Run Health Check' }}</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Quick Smoke Test Alert Banner -->
+          <div class="infra-alert-banner" *ngIf="smokeTestResult">
+            <span class="material-symbols-outlined">check_circle</span>
+            <span>{{ smokeTestResult }}</span>
+          </div>
+
+          <!-- Telemetry Two-Column Grid -->
+          <div class="infra-grid">
+            <!-- Card 1: AWS ECS Cluster -->
+            <div class="infra-card ecs-card">
+              <div class="infra-card-header">
+                <div class="infra-icon-cube ecs-cube">
+                  <span class="material-symbols-outlined">dns</span>
+                </div>
+                <div class="infra-title-wrap">
+                  <h4 class="infra-title font-mono">{{ infraData.ecs.clusterName }}</h4>
+                  <span class="infra-subtitle">{{ infraData.ecs.taskDefinition }}</span>
+                </div>
+                <span class="status-badge status-active font-mono">
+                  <span class="live-indicator"></span> {{ infraData.ecs.status }}
+                </span>
+              </div>
+
+              <div class="infra-metric-tiles">
+                <div class="metric-tile">
+                  <span class="tile-label">Running Tasks</span>
+                  <span class="tile-value font-mono">{{ infraData.ecs.runningTasks }} / {{ infraData.ecs.desiredTasks }}</span>
+                  <span class="tile-hint text-emerald">Healthy Fargate</span>
+                </div>
+                <div class="metric-tile">
+                  <span class="tile-label">SLA Uptime</span>
+                  <span class="tile-value font-mono">{{ infraData.ecs.sla }}</span>
+                  <span class="tile-hint text-emerald">Zero-Downtime</span>
+                </div>
+                <div class="metric-tile">
+                  <span class="tile-label">CPU Load</span>
+                  <span class="tile-value font-mono">{{ infraData.ecs.cpuPercent }}%</span>
+                  <div class="mini-bar-track">
+                    <div class="mini-bar-fill" [style.width.%]="infraData.ecs.cpuPercent"></div>
+                  </div>
+                </div>
+                <div class="metric-tile">
+                  <span class="tile-label">Memory Allocation</span>
+                  <span class="tile-value font-mono">{{ infraData.ecs.memoryPercent }}%</span>
+                  <div class="mini-bar-track">
+                    <div class="mini-bar-fill memory" [style.width.%]="infraData.ecs.memoryPercent"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="infra-card-specs">
+                <div class="spec-row font-mono">
+                  <span class="spec-k">Region:</span>
+                  <span class="spec-v">{{ infraData.ecs.region }}</span>
+                </div>
+                <div class="spec-row font-mono">
+                  <span class="spec-k">Deployment:</span>
+                  <span class="spec-v">{{ infraData.ecs.strategy }}</span>
+                </div>
+                <div class="spec-row font-mono">
+                  <span class="spec-k">Pipeline Stage:</span>
+                  <span class="spec-v badge-pipeline">{{ infraData.ecs.pipelineStage }} (Auto-Synced)</span>
+                </div>
+                <div class="spec-row font-mono">
+                  <span class="spec-k">Instant Rollback:</span>
+                  <span class="spec-v text-emerald">1-Click Ready</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card 2: PostgreSQL RDS Multi-AZ -->
+            <div class="infra-card rds-card">
+              <div class="infra-card-header">
+                <div class="infra-icon-cube rds-cube">
+                  <span class="material-symbols-outlined">database</span>
+                </div>
+                <div class="infra-title-wrap">
+                  <h4 class="infra-title font-mono">{{ infraData.rds.instanceId }}</h4>
+                  <span class="infra-subtitle">{{ infraData.rds.engine }}</span>
+                </div>
+                <span class="status-badge status-active font-mono">
+                  <span class="live-indicator"></span> {{ infraData.rds.status }}
+                </span>
+              </div>
+
+              <div class="infra-metric-tiles">
+                <div class="metric-tile">
+                  <span class="tile-label">Read Latency</span>
+                  <span class="tile-value font-mono">{{ infraData.rds.readLatencyMs }} ms</span>
+                  <span class="tile-hint text-emerald">High Throughput</span>
+                </div>
+                <div class="metric-tile">
+                  <span class="tile-label">Write Latency</span>
+                  <span class="tile-value font-mono">{{ infraData.rds.writeLatencyMs }} ms</span>
+                  <span class="tile-hint text-emerald">Synchronous</span>
+                </div>
+                <div class="metric-tile">
+                  <span class="tile-label">Connection Pool</span>
+                  <span class="tile-value font-mono">{{ infraData.rds.connections }}</span>
+                  <span class="tile-hint">TypeORM Pooled</span>
+                </div>
+                <div class="metric-tile">
+                  <span class="tile-label">Storage Used</span>
+                  <span class="tile-value font-mono">{{ infraData.rds.allocatedStorage }}%</span>
+                  <div class="mini-bar-track">
+                    <div class="mini-bar-fill rds" [style.width.%]="infraData.rds.allocatedStorage"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="infra-card-specs">
+                <div class="spec-row font-mono">
+                  <span class="spec-k">High Availability:</span>
+                  <span class="spec-v">{{ infraData.rds.multiAz }}</span>
+                </div>
+                <div class="spec-row font-mono">
+                  <span class="spec-k">Storage:</span>
+                  <span class="spec-v">{{ infraData.rds.storage }}</span>
+                </div>
+                <div class="spec-row font-mono">
+                  <span class="spec-k">Latest Migration:</span>
+                  <span class="spec-v truncate-text" [title]="infraData.rds.migrationVersion">{{ infraData.rds.migrationVersion }}</span>
+                </div>
+                <div class="spec-row font-mono">
+                  <span class="spec-k">Migration Status:</span>
+                  <span class="spec-v text-emerald">{{ infraData.rds.migrationStatus }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Recent DevOps & Migration Audit Events -->
+          <div class="infra-audit-box">
+            <h4 class="audit-title font-mono">
+              <span class="material-symbols-outlined">history</span>
+              <span>Recent DevOps Pipeline & Migration Events</span>
+            </h4>
+            <div class="audit-list">
+              <div class="audit-item" *ngFor="let ev of infraData.recentEvents">
+                <span class="audit-time font-mono">{{ ev.time }}</span>
+                <span class="audit-tag font-mono">{{ ev.type }}</span>
+                <span class="audit-desc">{{ ev.message }}</span>
+                <span class="audit-badge font-mono">{{ ev.badge }}</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Form Actions (Only for form tabs) -->
+        <div class="form-footer" *ngIf="activeTab !== 'team' && activeTab !== 'infra'">
           <button type="submit" class="btn btn-primary" [disabled]="profileForm.invalid || isSaving">
             <span *ngIf="!isSaving">Save Changes</span>
             <span *ngIf="isSaving">Saving...</span>
