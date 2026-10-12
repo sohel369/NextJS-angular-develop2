@@ -13,7 +13,7 @@ import { filter } from 'rxjs';
 export class AppComponent implements OnInit {
   isSidebarCollapsed = false;
   isMobileMenuOpen = false;
-  isDarkMode = true; // Luxury dark mode default
+  isDarkMode = false; // Stripe & Supabase Clean Light mode default
   currentYear = new Date().getFullYear();
 
   constructor(private readonly router: Router) {
@@ -26,7 +26,7 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    document.documentElement.setAttribute('data-theme', 'dark');
+    document.documentElement.setAttribute('data-theme', 'light');
   }
 
   toggleTheme(): void {

@@ -35,6 +35,15 @@
     <span>{{ errorMessage }}</span>
   </div>
 
+  <!-- Stripe/Supabase Style Gradient Cover Banner -->
+  <div class="profile-cover-banner" *ngIf="currentUser">
+    <div class="cover-mesh-gradient"></div>
+    <div class="cover-badges">
+      <span class="cover-badge"><span class="live-indicator"></span> AWS ECS Cluster Active</span>
+      <span class="cover-badge font-mono">PostgreSQL RDS Multi-AZ</span>
+    </div>
+  </div>
+
   <!-- Main Grid Layout -->
   <div class="profile-layout" *ngIf="currentUser">
     <!-- Left Column: User Summary Card -->

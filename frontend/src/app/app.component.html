@@ -62,11 +62,15 @@
       <div class="system-health-card">
         <div class="health-top">
           <span class="live-indicator"></span>
-          <span class="health-title">AWS us-east-1</span>
+          <span class="health-title font-mono">AWS us-east-1 (Active)</span>
         </div>
         <div class="health-metric">
-          <span class="health-val">99.98%</span>
-          <span class="health-sub">Zero-Downtime</span>
+          <span class="health-val font-mono">99.98% SLA</span>
+          <span class="health-sub">Zero-Downtime Multi-AZ</span>
+        </div>
+        <div class="health-telemetry-row font-mono">
+          <span>RDS: 3.2ms</span>
+          <span>● Fargate</span>
         </div>
       </div>
     </div>
@@ -82,20 +86,40 @@
           <span class="material-symbols-outlined">menu</span>
         </button>
 
+        <!-- View Navigation Pills (Direct 1-Click Screen Switcher) -->
+        <div class="topbar-view-pills desktop-only">
+          <a routerLink="/dashboard" routerLinkActive="active" class="view-pill-btn">
+            <span class="material-symbols-outlined">grid_view</span>
+            <span>Dashboard</span>
+            <span class="pill-pulse-dot"></span>
+          </a>
+          <a routerLink="/profile" routerLinkActive="active" class="view-pill-btn">
+            <span class="material-symbols-outlined">manage_accounts</span>
+            <span>Profile & Team</span>
+          </a>
+        </div>
+
         <!-- Search Bar -->
         <div class="topbar-search">
           <span class="material-symbols-outlined search-icon">search</span>
-          <input type="text" placeholder="Search metrics, users (Ctrl + K)..." />
-          <span class="kbd-shortcut">⌘K</span>
+          <input type="text" placeholder="Search metrics, users, ECS logs (Ctrl + K)..." />
+          <span class="kbd-shortcut font-mono">⌘K</span>
         </div>
       </div>
 
       <!-- Right Actions (Theme Toggle, Notifications, User Chip) -->
       <div class="topbar-actions">
         <!-- Live WebSocket Latency Pill -->
-        <div class="ws-latency-pill">
+        <div class="ws-latency-pill font-mono">
           <span class="live-indicator"></span>
-          <span>12ms • Live</span>
+          <span>14ms • Live WS</span>
+        </div>
+
+        <!-- AWS Pipeline Stage Badge -->
+        <div class="aws-stage-pill desktop-only font-mono">
+          <span class="stage-tag">STAGING</span>
+          <span class="material-symbols-outlined stage-arr">arrow_right_alt</span>
+          <span class="stage-tag active">PROD</span>
         </div>
 
         <!-- 1-Click Dark/Light Theme Toggle -->
@@ -111,14 +135,17 @@
 
         <!-- User Quick Profile Pill -->
         <div class="user-profile-menu" routerLink="/profile" title="View Alex Morgan Profile">
-          <img
-            src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80"
-            alt="Alex Morgan"
-            class="topbar-avatar"
-          />
+          <div class="avatar-wrapper">
+            <img
+              src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=120&auto=format&fit=crop&q=80"
+              alt="Alex Morgan"
+              class="topbar-avatar"
+            />
+            <span class="online-indicator"></span>
+          </div>
           <div class="topbar-user-info">
             <span class="topbar-user-name">Alex Morgan</span>
-            <span class="topbar-user-role">Lead Architect</span>
+            <span class="topbar-user-role font-mono">Staff Architect</span>
           </div>
           <span class="material-symbols-outlined chevron-icon">expand_more</span>
         </div>

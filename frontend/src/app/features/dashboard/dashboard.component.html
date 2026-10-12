@@ -32,87 +32,167 @@
     </div>
   </header>
 
-  <!-- Bento Metric KPI Cards -->
+  <!-- High-End Executive KPI Cards Suite (Stripe & FinTech Telemetry) -->
   <section class="metrics-row" *ngIf="stats">
     <!-- Card 1: Total Users -->
-    <div class="card metric-bento-card">
-      <div class="metric-top-row">
-        <span class="metric-label">{{ stats.metrics.totalUsers.label }}</span>
-        <div class="icon-chip bg-blue">
+    <div class="kpi-card kpi-card-blue">
+      <div class="card-accent-bar"></div>
+      
+      <div class="kpi-header">
+        <div class="kpi-title-group">
+          <span class="kpi-micro-tag font-mono">POSTGRES DB</span>
+          <h3 class="kpi-label">{{ stats.metrics.totalUsers.label }}</h3>
+        </div>
+        <div class="kpi-icon-box box-blue">
           <span class="material-symbols-outlined">group</span>
         </div>
       </div>
-      <div class="metric-main-val">{{ stats.metrics.totalUsers.value }}</div>
-      <div class="metric-bottom-row">
-        <div class="trend-badge positive">
+
+      <div class="kpi-value-row">
+        <div class="kpi-main-number font-mono">{{ stats.metrics.totalUsers.value }}</div>
+        <span class="kpi-unit-label font-mono">users</span>
+      </div>
+
+      <div class="kpi-footer">
+        <div class="kpi-trend-pill positive font-mono">
           <span class="material-symbols-outlined">trending_up</span>
           <span>{{ stats.metrics.totalUsers.change }}</span>
         </div>
-        <svg class="sparkline-svg" viewBox="0 0 60 20">
-          <path d="M0,15 Q15,18 30,8 T60,4" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round"/>
-        </svg>
+
+        <!-- Rich Area Gradient Sparkline -->
+        <div class="kpi-chart-preview">
+          <svg class="sparkline-area" viewBox="0 0 100 32" preserveAspectRatio="none">
+            <defs>
+              <linearGradient id="blueAreaGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#3b82f6" stop-opacity="0.4"/>
+                <stop offset="100%" stop-color="#3b82f6" stop-opacity="0.0"/>
+              </linearGradient>
+            </defs>
+            <path d="M0,26 Q25,28 50,14 T100,6 L100,32 L0,32 Z" fill="url(#blueAreaGrad)"/>
+            <path d="M0,26 Q25,28 50,14 T100,6" fill="none" stroke="#3b82f6" stroke-width="2.5" stroke-linecap="round"/>
+          </svg>
+        </div>
       </div>
     </div>
 
-    <!-- Card 2: Active Sessions -->
-    <div class="card metric-bento-card">
-      <div class="metric-top-row">
-        <span class="metric-label">{{ stats.metrics.activeSessions.label }}</span>
-        <div class="icon-chip bg-green">
+    <!-- Card 2: Active Users -->
+    <div class="kpi-card kpi-card-green">
+      <div class="card-accent-bar"></div>
+
+      <div class="kpi-header">
+        <div class="kpi-title-group">
+          <span class="kpi-micro-tag font-mono">
+            <span class="live-dot-mini"></span> LIVE WS POOL
+          </span>
+          <h3 class="kpi-label">{{ stats.metrics.activeSessions.label }}</h3>
+        </div>
+        <div class="kpi-icon-box box-green">
           <span class="material-symbols-outlined">person_check</span>
         </div>
       </div>
-      <div class="metric-main-val">{{ stats.metrics.activeSessions.value }}</div>
-      <div class="metric-bottom-row">
-        <div class="trend-badge positive">
+
+      <div class="kpi-value-row">
+        <div class="kpi-main-number font-mono">{{ stats.metrics.activeSessions.value }}</div>
+        <span class="kpi-unit-label font-mono">online</span>
+      </div>
+
+      <div class="kpi-footer">
+        <div class="kpi-trend-pill positive font-mono">
           <span class="material-symbols-outlined">trending_up</span>
           <span>{{ stats.metrics.activeSessions.change }}</span>
         </div>
-        <svg class="sparkline-svg" viewBox="0 0 60 20">
-          <path d="M0,18 Q15,12 30,14 T60,2" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round"/>
-        </svg>
+
+        <div class="kpi-chart-preview">
+          <svg class="sparkline-area" viewBox="0 0 100 32" preserveAspectRatio="none">
+            <defs>
+              <linearGradient id="greenAreaGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#10b981" stop-opacity="0.4"/>
+                <stop offset="100%" stop-color="#10b981" stop-opacity="0.0"/>
+              </linearGradient>
+            </defs>
+            <path d="M0,28 Q25,18 50,20 T100,4 L100,32 L0,32 Z" fill="url(#greenAreaGrad)"/>
+            <path d="M0,28 Q25,18 50,20 T100,4" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round"/>
+          </svg>
+        </div>
       </div>
     </div>
 
     <!-- Card 3: Revenue Volume -->
-    <div class="card metric-bento-card">
-      <div class="metric-top-row">
-        <span class="metric-label">{{ stats.metrics.totalTransactions.label }}</span>
-        <div class="icon-chip bg-purple">
+    <div class="kpi-card kpi-card-purple">
+      <div class="card-accent-bar"></div>
+
+      <div class="kpi-header">
+        <div class="kpi-title-group">
+          <span class="kpi-micro-tag font-mono">ARR FINANCIALS</span>
+          <h3 class="kpi-label">{{ stats.metrics.totalTransactions.label }}</h3>
+        </div>
+        <div class="kpi-icon-box box-purple">
           <span class="material-symbols-outlined">payments</span>
         </div>
       </div>
-      <div class="metric-main-val">{{ stats.metrics.totalTransactions.value }}</div>
-      <div class="metric-bottom-row">
-        <div class="trend-badge positive">
+
+      <div class="kpi-value-row">
+        <div class="kpi-main-number font-mono">{{ stats.metrics.totalTransactions.value }}</div>
+      </div>
+
+      <div class="kpi-footer">
+        <div class="kpi-trend-pill positive font-mono">
           <span class="material-symbols-outlined">trending_up</span>
           <span>{{ stats.metrics.totalTransactions.change }}</span>
         </div>
-        <svg class="sparkline-svg" viewBox="0 0 60 20">
-          <path d="M0,14 Q20,16 35,6 T60,1" fill="none" stroke="#8b5cf6" stroke-width="2" stroke-linecap="round"/>
-        </svg>
+
+        <div class="kpi-chart-preview">
+          <svg class="sparkline-area" viewBox="0 0 100 32" preserveAspectRatio="none">
+            <defs>
+              <linearGradient id="purpleAreaGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#8b5cf6" stop-opacity="0.4"/>
+                <stop offset="100%" stop-color="#8b5cf6" stop-opacity="0.0"/>
+              </linearGradient>
+            </defs>
+            <path d="M0,24 Q30,26 55,10 T100,3 L100,32 L0,32 Z" fill="url(#purpleAreaGrad)"/>
+            <path d="M0,24 Q30,26 55,10 T100,3" fill="none" stroke="#8b5cf6" stroke-width="2.5" stroke-linecap="round"/>
+          </svg>
+        </div>
       </div>
     </div>
 
     <!-- Card 4: System Health & Uptime -->
-    <div class="card metric-bento-card">
-      <div class="metric-top-row">
-        <span class="metric-label">{{ stats.metrics.systemHealth.label }}</span>
-        <div class="icon-chip bg-cyan">
+    <div class="kpi-card kpi-card-cyan">
+      <div class="card-accent-bar"></div>
+
+      <div class="kpi-header">
+        <div class="kpi-title-group">
+          <span class="kpi-micro-tag font-mono">AWS ECS SLA</span>
+          <h3 class="kpi-label">{{ stats.metrics.systemHealth.label }}</h3>
+        </div>
+        <div class="kpi-icon-box box-cyan">
           <span class="material-symbols-outlined">health_and_safety</span>
         </div>
       </div>
-      <div class="metric-main-val">{{ stats.metrics.systemHealth.value }}</div>
-      <div class="metric-bottom-row">
-        <div class="trend-badge positive">
+
+      <div class="kpi-value-row">
+        <div class="kpi-main-number font-mono">{{ stats.metrics.systemHealth.value }}</div>
+        <span class="kpi-unit-label font-mono">Uptime</span>
+      </div>
+
+      <div class="kpi-footer">
+        <div class="kpi-trend-pill verified font-mono">
           <span class="material-symbols-outlined">verified</span>
           <span>{{ stats.metrics.systemHealth.change }}</span>
         </div>
-        <div class="uptime-gauge">
-          <svg viewBox="0 0 24 24" class="gauge-svg">
-            <circle cx="12" cy="12" r="9" stroke="rgba(16, 185, 129, 0.2)" stroke-width="2.5" fill="none"/>
-            <circle cx="12" cy="12" r="9" stroke="#10b981" stroke-width="2.5" stroke-dasharray="54" stroke-dashoffset="2" stroke-linecap="round" fill="none"/>
+
+        <!-- Radial Circular Progress Gauge -->
+        <div class="kpi-radial-gauge" title="99.98% SLA Availability">
+          <svg viewBox="0 0 36 36" class="radial-svg">
+            <path class="circle-bg"
+              d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+            />
+            <path class="circle-val"
+              stroke-dasharray="100, 100"
+              d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+            />
           </svg>
+          <span class="gauge-center-dot"></span>
         </div>
       </div>
     </div>
